@@ -25,7 +25,7 @@ def parse_args():
 
 
 def container_exists(container_name):
-    inspect_proc = run(f"nvidia-docker container inspect " + container_name, shell=True, \
+    inspect_proc = run(f"docker container inspect " + container_name, shell=True, \
                        stderr=DEVNULL, stdout=DEVNULL, encoding="UTF-8")
     return not bool(inspect_proc.returncode)
 
@@ -39,7 +39,7 @@ def get_available_gpus():
     return [x.name for x in local_device_protos if x.device_type == 'GPU']
 
 def get_nvidia_docker_cmd(config):
-    cmd = f"nvidia-docker run "
+    cmd = f"docker run --gpus all "
     if config["interactive"]:
         cmd += "-it "
     else:
